@@ -1,0 +1,8 @@
+__start__: a.out
+	./a.out
+a.out:glowny.o funkcje.o
+	g++ glowny.o funkcje.o
+glowny.o:test.cpp funkcje.h
+	g++ test.cpp -lboost_unit_test_framework
+funkcje.o:funkcje.h funkcje.cpp
+	g++ -c -Wall -pedantic funkcje.cpp
