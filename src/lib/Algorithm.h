@@ -36,7 +36,7 @@ public:
 	int make_stats(Board & board);
 	int search_best_move(Board & board);
 	void search_best_move2(Board & board, Board & copy_of_board);
-	void search_worst_move(Board & board);
+	void search_worst_move(Board & board, Board & copy_of_board);
 	int search_allowed_fields(Board & board);
 	int min_move_value(Board & board);
     int check_field(Board & board, int x, int y, int shift_x, int shift_y);

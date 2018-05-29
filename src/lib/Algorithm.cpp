@@ -278,35 +278,43 @@ void Algorithm::search_best_move2(Board & board,Board & copy_of_board)
     board.cords_simulate_moves.push_back(make_pair(copy_of_board.simulate_cords[0],copy_of_board.simulate_cords[1]));
 }
 
-void Algorithm::search_worst_move(Board & board)
+void Algorithm::search_worst_move(Board & board, Board & copy_of_board)
 {
     int mini;
-    mini = board.evaluate_tab[board.cords_possible_move[0].first-1][board.cords_possible_move[0].second-1];
-    board.simulate_cords[0] = board.cords_possible_move[0].first;
-    board.simulate_cords[1] = board.cords_possible_move[0].second;
+    mini = copy_of_board.evaluate_tab[copy_of_board.cords_possible_move[0].first-1][copy_of_board.cords_possible_move[0].second-1];
+    copy_of_board.simulate_cords[0] = copy_of_board.cords_possible_move[0].first;
+    copy_of_board.simulate_cords[1] = copy_of_board.cords_possible_move[0].second;
 
-    for(unsigned int i=0; i<board.cords_possible_move.size(); i++)
+    for(unsigned int i=0; i<copy_of_board.cords_possible_move.size(); i++)
     {
-        if(board.evaluate_tab[board.cords_possible_move[i].first][board.cords_possible_move[0].second] >= mini)
+        if(copy_of_board.evaluate_tab[copy_of_board.cords_possible_move[i].first][copy_of_board.cords_possible_move[0].second] >= mini)
         {
-            mini = board.evaluate_tab[board.cords_possible_move[i].first-1][board.cords_possible_move[i].second-1];
-            board.simulate_cords[0] = board.cords_possible_move[i].first;
-            board.simulate_cords[1] = board.cords_possible_move[i].second;
+            mini = copy_of_board.evaluate_tab[copy_of_board.cords_possible_move[i].first-1][copy_of_board.cords_possible_move[i].second-1];
+            copy_of_board.simulate_cords[0] = copy_of_board.cords_possible_move[i].first;
+            copy_of_board.simulate_cords[1] = copy_of_board.cords_possible_move[i].second;
         }
     }
+    board.cords_second_turn.push_back(make_pair(copy_of_board.simulate_cords[0],copy_of_board.simulate_cords[1]));
 }
 
 int Algorithm::min_move_value(Board & board)
 {
-    int mini;
-    mini = board.evaluate_tab[board.cords_simulate_moves[0].first-1][board.cords_simulate_moves[0].second-1];
+    int sum, sum_2;
+
+    sum = board.evaluate_tab[board.cords_possible_move[0].first-1][board.cords_possible_move[0].second-1]
+    + board.evaluate_tab[board.cords_second_turn[0].first-1][board.cords_second_turn[0].second-1]
+    + board.evaluate_tab[board.cords_simulate_moves[0].first-1][board.cords_simulate_moves[0].second-1];
+
     for(unsigned int i=0; i<board.cords_simulate_moves.size(); i++)
     {
-        if(board.evaluate_tab[board.cords_simulate_moves[i].first-1][board.cords_simulate_moves[0].second-1] >= mini)
+    sum_2 = board.evaluate_tab[board.cords_possible_move[i].first-1][board.cords_possible_move[i].second-1]
+     + board.evaluate_tab[board.cords_second_turn[i].first-1][board.cords_second_turn[i].second-1]
+    + board.evaluate_tab[board.cords_simulate_moves[i].first-1][board.cords_simulate_moves[i].second-1];
+        if(sum_2 >= sum)
         {
-            mini = board.evaluate_tab[board.cords_simulate_moves[i].first-1][board.cords_simulate_moves[i].second-1];
-            board.cords_best_move[0] = board.cords_simulate_moves[i].first;
-            board.cords_best_move[1] = board.cords_simulate_moves[i].second;
+           sum = board.evaluate_tab[board.cords_possible_move[i].first-1][board.cords_possible_move[i].second-1]
+            + board.evaluate_tab[board.cords_second_turn[i].first-1][board.cords_second_turn[i].second-1]
+            + board.evaluate_tab[board.cords_simulate_moves[i].first-1][board.cords_simulate_moves[i].second-1];
             board.number_of_best_move = i;
         }
     }
@@ -316,7 +324,6 @@ int Algorithm::min_move_value(Board & board)
 //Funkcja symulujące dalsze ruchy
 void Algorithm::simulate_moves(Board & board)
 {
-    //int x,y;
     Board copy_of_board;
 
     for(unsigned int i=0; i<board.cords_possible_move.size(); i++)
@@ -328,8 +335,6 @@ void Algorithm::simulate_moves(Board & board)
         clear_part_pawn_to_beat(copy_of_board);
         clear_cords_check_pawns(copy_of_board);
         //display.show_allowed_field(copy_of_board.cords_possible_move);
-        //x = board.cords_possible_move[i].first;
-        //y = board.cords_possible_move[i].second;
         copy_of_board.set_pawn_on_field(copy_of_board.cords_possible_move[i].first,copy_of_board.cords_possible_move[i].second,copy_of_board.user_color_pawn);
         make_beat(copy_of_board,copy_of_board.cords_possible_move[i].first,copy_of_board.cords_possible_move[i].second);
         clear_vectors(copy_of_board);
@@ -349,7 +354,7 @@ void Algorithm::simulate_moves(Board & board)
                 search_best_move2(board,copy_of_board);
             }
             else if(j%2==1)
-                search_worst_move(copy_of_board);
+                search_worst_move(board, copy_of_board);
 
             copy_of_board.set_pawn_on_field(copy_of_board.simulate_cords[0], copy_of_board.simulate_cords[1], copy_of_board.user_color_pawn);
             make_beat(copy_of_board,copy_of_board.simulate_cords[0], copy_of_board.simulate_cords[1]);

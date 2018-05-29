@@ -48,6 +48,7 @@ public:
 	std::vector<std::pair<int, int> > part_pawn_to_beat;
 	std::vector<std::pair<int,int> >  cords_check_pawns;
 	std::vector<std::pair<int,int> >  cords_simulate_moves;
+	std::vector<std::pair<int,int> >  cords_second_turn;
 	/*
 	int evaluate_tab[SIZE_OF_BOARD_X][SIZE_OF_BOARD_Y] =
     {
