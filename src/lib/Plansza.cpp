@@ -184,10 +184,10 @@ void Board::choose_mode()
 //Funkcja ustawiania pionki w polach bazowych
 void Board::set_main_pawns()
 {
-    tab[cord_y][cord_x] = BLACK_PAWN;
-    tab[cord_y][cord_x-1] = WHITE_PAWN;
-    tab[cord_y-1][cord_x] = WHITE_PAWN;
-    tab[cord_y-1][cord_x-1] = BLACK_PAWN;
+    tab[cord_y][cord_x] = WHITE_PAWN;
+    tab[cord_y][cord_x-1] = BLACK_PAWN;
+    tab[cord_y-1][cord_x] = BLACK_PAWN;
+    tab[cord_y-1][cord_x-1] = WHITE_PAWN;
 }
 
 

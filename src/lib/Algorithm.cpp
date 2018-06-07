@@ -302,18 +302,18 @@ int Algorithm::min_move_value(Board & board)
     int sum, sum_2;
 
     sum = board.evaluate_tab[board.cords_possible_move[0].first-1][board.cords_possible_move[0].second-1]
-    + board.evaluate_tab[board.cords_second_turn[0].first-1][board.cords_second_turn[0].second-1]
+    - board.evaluate_tab[board.cords_second_turn[0].first-1][board.cords_second_turn[0].second-1]
     + board.evaluate_tab[board.cords_simulate_moves[0].first-1][board.cords_simulate_moves[0].second-1];
 
     for(unsigned int i=0; i<board.cords_simulate_moves.size(); i++)
     {
     sum_2 = board.evaluate_tab[board.cords_possible_move[i].first-1][board.cords_possible_move[i].second-1]
-     + board.evaluate_tab[board.cords_second_turn[i].first-1][board.cords_second_turn[i].second-1]
+     - board.evaluate_tab[board.cords_second_turn[i].first-1][board.cords_second_turn[i].second-1]
     + board.evaluate_tab[board.cords_simulate_moves[i].first-1][board.cords_simulate_moves[i].second-1];
         if(sum_2 >= sum)
         {
            sum = board.evaluate_tab[board.cords_possible_move[i].first-1][board.cords_possible_move[i].second-1]
-            + board.evaluate_tab[board.cords_second_turn[i].first-1][board.cords_second_turn[i].second-1]
+            - board.evaluate_tab[board.cords_second_turn[i].first-1][board.cords_second_turn[i].second-1]
             + board.evaluate_tab[board.cords_simulate_moves[i].first-1][board.cords_simulate_moves[i].second-1];
             board.number_of_best_move = i;
         }
